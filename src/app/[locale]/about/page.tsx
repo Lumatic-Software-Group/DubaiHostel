@@ -1,8 +1,15 @@
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import AboutSection from '@/components/AboutSection';
+import { setRequestLocale } from 'next-intl/server';
 
-export default function AboutPage() {
+interface PageProps {
+  params: { locale: string };
+}
+
+export default function AboutPage({ params: { locale } }: PageProps) {
+  setRequestLocale(locale);
+  
   return (
     <main className="min-h-screen">
       <Navigation />

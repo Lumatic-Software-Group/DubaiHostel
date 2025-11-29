@@ -5,8 +5,15 @@ import SpecialAccommodationSection from '@/components/SpecialAccommodationSectio
 import AmenitiesPreview from '@/components/AmenitiesPreview';
 import LocationPreview from '@/components/LocationPreview';
 import Footer from '@/components/Footer';
+import { setRequestLocale } from 'next-intl/server';
 
-export default function HomePage() {
+interface PageProps {
+  params: { locale: string };
+}
+
+export default function HomePage({ params: { locale } }: PageProps) {
+  setRequestLocale(locale);
+  
   return (
     <main className="min-h-screen">
       <Navigation />

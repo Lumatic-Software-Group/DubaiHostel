@@ -1,8 +1,15 @@
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ContactSection from '@/components/ContactSection';
+import { setRequestLocale } from 'next-intl/server';
 
-export default function ContactPage() {
+interface PageProps {
+  params: { locale: string };
+}
+
+export default function ContactPage({ params: { locale } }: PageProps) {
+  setRequestLocale(locale);
+  
   return (
     <main className="min-h-screen">
       <Navigation />
