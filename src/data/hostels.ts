@@ -272,7 +272,14 @@ export const amenities: Amenity[] = [
   { id: "supermarket_opposite", name: "Supermarket Opposite", nameAr: "سوپرمارکت روبرو", icon: "ShoppingBag", category: "comfort", description: "Malabar Supermarket", descriptionAr: "سوپرمارکت مالابار" },
 ];
 
+// Legacy exports for backward compatibility
+export const hostels = roomTypes;
+
 export const getRoomById = (id: string): RoomType | undefined => {
+  return roomTypes.find(room => room.id === id);
+};
+
+export const getHostelById = (id: string): RoomType | undefined => {
   return roomTypes.find(room => room.id === id);
 };
 
@@ -281,5 +288,9 @@ export const getRoomsByType = (type: string): RoomType[] => {
 };
 
 export const getAvailableRooms = (): RoomType[] => {
+  return roomTypes.filter(room => room.available);
+};
+
+export const getFeaturedHostels = (): RoomType[] => {
   return roomTypes.filter(room => room.available);
 };
