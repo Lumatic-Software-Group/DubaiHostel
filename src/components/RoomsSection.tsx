@@ -34,10 +34,10 @@ export default function RoomsSection() {
         className="text-center mb-16"
       >
         <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-          Our Rooms
+            {locale === 'fa' ? 'اتاق های ما' : 'Our Rooms'}
         </h2>
         <p className="text-white/70 text-lg max-w-2xl mx-auto">
-          Choose from our variety of comfortable rooms for every budget
+            {locale === 'fa' ? 'از بین انواع اتاق‌های ما، متناسب با هر بودجه‌ای، انتخاب کنید' : 'Choose from our variety of comfortable rooms for every budget'}
         </p>
       </motion.div>
 

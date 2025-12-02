@@ -144,8 +144,8 @@ export default function LocationPreview() {
               <Train className="w-5 h-5 mr-3 text-blue-400" />
               <span>
                 {locale === 'fa' 
-                  ? '۳ دقیقه تا ایستگاه مترو الراس'
-                  : '3 minutes to Al Ras Metro Station'
+                  ? '۳ دقیقه تا ایستگاه مترو بنی یاس'
+                  : '3 minutes to Baniyas Metro Station'
                 }
               </span>
             </div>

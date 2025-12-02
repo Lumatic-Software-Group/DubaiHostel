@@ -237,7 +237,7 @@ export default function HostelDetails({ hostel }: HostelDetailsProps) {
                 </div>
                 <div className="flex justify-between">
                   <span>Currency:</span>
-                  <span>AED, USD</span>
+                  <span>AED</span>
                 </div>
               </div>
             </motion.div>
