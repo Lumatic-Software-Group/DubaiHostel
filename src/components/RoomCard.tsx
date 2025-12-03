@@ -1,10 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
-import { Wifi, Snowflake, Users, Maximize, Bed, Phone } from 'lucide-react';
+import { Wifi, Snowflake, Users, Maximize, Bed, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
-import { RoomType, iranianHostel } from '@/data/hostels';
+import { useState, useEffect } from 'react';
+import { RoomType } from '@/data/hostels';
 
 interface RoomCardProps {
     room: RoomType;
@@ -34,6 +35,22 @@ const amenityIcons: { [key: string]: any } = {
 export default function RoomCard({ room, index }: RoomCardProps) {
     const t = useTranslations('rooms');
     const locale = useLocale();
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+    const [selectedBedOption, setSelectedBedOption] = useState(0);
+
+    // Auto-slide images every 3 seconds
+    useEffect(() => {
+        if (!isHovered && room.images.length > 1) {
+            const interval = setInterval(() => {
+                setCurrentImageIndex((prev) =>
+                    prev === room.images.length - 1 ? 0 : prev + 1
+                );
+            }, 3000);
+
+            return () => clearInterval(interval);
+        }
+    }, [isHovered, room.images.length]);
 
     const cardVariants = {
         hidden: {
@@ -54,12 +71,30 @@ export default function RoomCard({ room, index }: RoomCardProps) {
     };
 
     const handleWhatsAppBook = () => {
+        const bedInfo = room.bedOptions
+            ? ` (${room.bedOptions[selectedBedOption].beds}-bed)`
+            : '';
+
         const message = locale === 'fa'
-            ? `سلام! می‌خواهم ${room.nameAr} را در هاستل ایرانی رزرو کنم. لطفاً اطلاعات بیشتری ارسال کنید.`
-            : `Hi! I would like to book ${room.name} at Iranian Hostel. Please send me more information.`;
+            ? `سلام! می‌خواهم ${room.nameAr}${bedInfo} را در هاستل ایرانی رزرو کنم. لطفاً اطلاعات بیشتری ارسال کنید.`
+            : `Hi! I would like to book ${room.name}${bedInfo} at Iranian Hostel. Please send me more information.`;
 
         const whatsappUrl = `https://wa.me/971521900874?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
+    };
+
+    const nextImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentImageIndex((prev) =>
+            prev === room.images.length - 1 ? 0 : prev + 1
+        );
+    };
+
+    const prevImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentImageIndex((prev) =>
+            prev === 0 ? room.images.length - 1 : prev - 1
+        );
     };
 
     return (
@@ -75,26 +110,80 @@ export default function RoomCard({ room, index }: RoomCardProps) {
             }}
             className="glass-card rounded-3xl overflow-hidden group cursor-pointer"
         >
-            {/* Image */}
-            <div className="relative h-64 overflow-hidden">
-                <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.6 }}
-                >
-                    <Image
-                        src={room.image}
-                        alt={locale === 'fa' ? room.nameAr : room.name}
-                        fill
-                        className="object-cover"
-                    />
-                </motion.div>
+            {/* Image Slider */}
+            <div
+                className="relative h-64 overflow-hidden"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                <AnimatePresence mode="wait">
+                    <motion.div
+                        key={currentImageIndex}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="relative w-full h-full"
+                    >
+                        <Image
+                            src={room.images[currentImageIndex]}
+                            alt={`${locale === 'fa' ? room.nameAr : room.name} - ${currentImageIndex + 1}`}
+                            fill
+                            className="object-cover"
+                        />
+                    </motion.div>
+                </AnimatePresence>
+
+                {/* Navigation Arrows - Show on hover */}
+                {room.images.length > 1 && isHovered && (
+                    <>
+                        <motion.button
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={prevImage}
+                            className="absolute left-2 top-1/2 -translate-y-1/2 glass-dark rounded-full p-2 hover:bg-white/30 transition-colors z-10"
+                        >
+                            <ChevronLeft className="w-5 h-5 text-white" />
+                        </motion.button>
+                        <motion.button
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={nextImage}
+                            className="absolute right-2 top-1/2 -translate-y-1/2 glass-dark rounded-full p-2 hover:bg-white/30 transition-colors z-10"
+                        >
+                            <ChevronRight className="w-5 h-5 text-white" />
+                        </motion.button>
+                    </>
+                )}
+
+                {/* Image Indicators */}
+                {room.images.length > 1 && (
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                        {room.images.map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setCurrentImageIndex(i);
+                                }}
+                                className={`w-2 h-2 rounded-full transition-all ${
+                                    i === currentImageIndex
+                                        ? 'bg-white w-6'
+                                        : 'bg-white/50 hover:bg-white/70'
+                                }`}
+                            />
+                        ))}
+                    </div>
+                )}
 
                 {/* Price Badge */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="absolute top-4 right-4 glass-dark rounded-full px-4 py-2"
+                    className="absolute top-4 right-4 glass-dark rounded-full px-4 py-2 z-10"
                 >
                     <div className="text-center">
                         <div className="text-lg font-bold text-white">
@@ -110,14 +199,14 @@ export default function RoomCard({ room, index }: RoomCardProps) {
                         initial={{ opacity: 0, scale: 0 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.5 }}
-                        className="absolute bottom-4 right-4 w-3 h-3 bg-green-400 rounded-full border-2 border-white"
+                        className="absolute top-4 left-4 w-3 h-3 bg-green-400 rounded-full border-2 border-white z-10"
                     />
                 )}
             </div>
 
             {/* Content */}
             <div className="p-6">
-                {/* Title and Capacity */}
+                {/* Title */}
                 <div className="mb-4">
                     <motion.h3
                         initial={{ opacity: 0, y: 20 }}
@@ -128,6 +217,30 @@ export default function RoomCard({ room, index }: RoomCardProps) {
                         {locale === 'fa' ? room.nameAr : room.name}
                     </motion.h3>
                 </div>
+
+                {/* Bed Options Selector */}
+                {room.bedOptions && room.bedOptions.length > 1 && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="flex gap-2 mb-4"
+                    >
+                        {room.bedOptions.map((option, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setSelectedBedOption(i)}
+                                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                                    selectedBedOption === i
+                                        ? 'bg-blue-500 text-white'
+                                        : 'glass-dark text-white/70 hover:text-white hover:bg-white/10'
+                                }`}
+                            >
+                                {locale === 'fa' ? option.labelAr : option.label}
+                            </button>
+                        ))}
+                    </motion.div>
+                )}
 
                 {/* Description */}
                 <motion.p
@@ -174,7 +287,7 @@ export default function RoomCard({ room, index }: RoomCardProps) {
                     className="w-full bg-green-500 rounded-xl py-3 text-white text-sm font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
                 >
                     <Phone className="w-4 h-4" />
-                    Book this room
+                    {locale === 'fa' ? 'رزرو این اتاق' : 'Book this room'}
                 </motion.button>
             </div>
         </motion.div>
