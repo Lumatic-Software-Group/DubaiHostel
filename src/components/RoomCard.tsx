@@ -131,7 +131,7 @@ export default function RoomCard({room, index}: RoomCardProps) {
             >
                 {/* Image Slider */}
                 <div
-                    className="relative h-64 overflow-hidden cursor-pointer"
+                    className="relative h-72 overflow-hidden cursor-pointer"
                     onMouseEnter={() => setIsHovered(true)}
                     onMouseLeave={() => setIsHovered(false)}
                     onClick={() => openLightbox(currentImageIndex)}
