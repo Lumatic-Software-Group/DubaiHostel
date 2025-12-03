@@ -136,24 +136,6 @@ export default function AmenitiesPreview() {
           </motion.div>
         ))}
       </motion.div>
-
-      {/* View All Amenities Button */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="text-center mt-12"
-      >
-        <Link href={`/${locale}/amenities`}>
-          <motion.button
-            whileHover={{scale: 1.05, y: -2}}
-            whileTap={{scale: 0.95}}
-            className="glass-card rounded-2xl px-8 py-4 text-white font-semibold hover:bg-white/20 transition-all"
-          >
-            {tPage('viewAll')}
-          </motion.button>
-        </Link>
-      </motion.div>
     </section>
   );
 }
