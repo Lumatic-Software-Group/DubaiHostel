@@ -49,33 +49,6 @@ export default function RoomsSection() {
       >
           <RoomCard room={roomTypes[0]} index={0} />
       </motion.div>
-
-      {/* Special Offers Banner */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-        className="mt-16"
-      >
-        <div className="glass-card rounded-3xl p-8 text-center">
-          <h3 className="text-2xl font-bold text-white mb-4">
-            {locale === 'fa' ? 'پیشنهادات ویژه' : 'Special Offers'}
-          </h3>
-          <p className="text-white/80 mb-6">
-            {locale === 'fa' 
-              ? 'برای اقامت بیش از ۳ شب، ۱۵٪ تخفیف ویژه دریافت کنید'
-              : 'Get 15% off for stays longer than 3 nights'
-            }
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="glass-accent rounded-xl px-8 py-3 text-green-400 font-semibold hover:text-green-300 transition-colors"
-          >
-            {locale === 'fa' ? 'اعمال تخفیف' : 'Apply Discount'}
-          </motion.button>
-        </div>
-      </motion.div>
     </section>
   );
 }

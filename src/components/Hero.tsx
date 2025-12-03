@@ -131,7 +131,7 @@ export default function Hero() {
               <div className="flex items-center justify-center mb-2">
                 <Star className="w-6 h-6 text-yellow-300" />
               </div>
-              <div className="text-2xl font-bold text-white">4.8</div>
+              <div className="text-2xl font-bold text-white">4.6</div>
               <div className="text-white/70 text-sm">Average Rating</div>
             </div>
             
@@ -142,26 +142,6 @@ export default function Hero() {
               <div className="text-2xl font-bold text-white">1000+</div>
               <div className="text-white/70 text-sm">Happy Guests</div>
             </div>
-          </motion.div>
-
-          {/* CTA Button */}
-          <motion.div
-            variants={itemVariants}
-            className="pt-8"
-          >
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="group glass-card rounded-2xl px-8 py-4 text-white font-semibold text-lg inline-flex items-center space-x-3 hover:bg-white/20 transition-all duration-300"
-            >
-              <span>{t('cta')}</span>
-              <motion.div
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              >
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </motion.div>
-            </motion.button>
           </motion.div>
         </motion.div>
       </div>
