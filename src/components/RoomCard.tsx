@@ -38,7 +38,6 @@ export default function RoomCard({ room, index }: RoomCardProps) {
     const locale = useLocale();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
-    const [selectedBedOption, setSelectedBedOption] = useState(0);
 
     // Auto-slide images every 3 seconds
     useEffect(() => {
@@ -71,14 +70,8 @@ export default function RoomCard({ room, index }: RoomCardProps) {
         }
     };
 
-    const handleWhatsAppBook = () => {
-        const bedInfo = room.bedOptions
-            ? ` (${room.bedOptions[selectedBedOption].beds}-bed)`
-            : '';
-        
-        const roomName = locale === 'fa' ? room.nameAr : room.name;
-        const message = tCard('whatsappMessage').replace('{roomName}', `${roomName}${bedInfo}`);
-
+    const handleWhatsAppContact = () => {
+        const message = t('whatsappMessage');
         const whatsappUrl = `https://wa.me/971521900874?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     };
@@ -179,19 +172,20 @@ export default function RoomCard({ room, index }: RoomCardProps) {
                 )}
 
                 {/* Price Badge */}
-                <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.3 }}
-                    className="absolute top-4 right-4 glass-dark rounded-full px-4 py-2 z-10"
-                >
-                    <div className="text-center">
-                        <div className="text-lg font-bold text-white">
-                            {room.price} AED
-                        </div>
-                        <div className="text-xs text-white/70">{t('perNight')}</div>
+                <div className="absolute top-4 right-4 glass-dark rounded-2xl px-4 py-2">
+                    <div className="text-center text-white">
+                        <div className="text-2xl font-bold">50 AED</div>
+                        <div className="text-sm">{t('perNight')}</div>
                     </div>
-                </motion.div>
+                </div>
+
+                {/* Monthly Price */}
+                <div className="absolute top-4 left-4 glass rounded-2xl px-4 py-2">
+                    <div className="text-center text-white">
+                        <div className="text-lg font-bold">900 AED</div>
+                        <div className="text-xs">{t('priceMonthly')}</div>
+                    </div>
+                </div>
 
                 {/* Availability Indicator */}
                 {room.available && (
@@ -217,30 +211,6 @@ export default function RoomCard({ room, index }: RoomCardProps) {
                         {locale === 'fa' ? room.nameAr : room.name}
                     </motion.h3>
                 </div>
-
-                {/* Bed Options Selector */}
-                {room.bedOptions && room.bedOptions.length > 1 && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="flex gap-2 mb-4"
-                    >
-                        {room.bedOptions.map((option, i) => (
-                            <button
-                                key={i}
-                                onClick={() => setSelectedBedOption(i)}
-                                className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
-                                    selectedBedOption === i
-                                        ? 'bg-blue-500 text-white'
-                                        : 'glass-dark text-white/70 hover:text-white hover:bg-white/10'
-                                }`}
-                            >
-                                {locale === 'fa' ? option.labelAr : option.label}
-                            </button>
-                        ))}
-                    </motion.div>
-                )}
 
                 {/* Description */}
                 <motion.p
@@ -283,7 +253,7 @@ export default function RoomCard({ room, index }: RoomCardProps) {
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={handleWhatsAppBook}
+                    onClick={handleWhatsAppContact}
                     className="w-full bg-green-500 rounded-xl py-3 text-white text-sm font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
                 >
                     <Phone className="w-4 h-4" />

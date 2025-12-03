@@ -13,14 +13,6 @@ export interface RoomType {
     featuresAr: string[];
     available: boolean;
     size: number;
-    bedOptions?: BedOption[];
-}
-
-export interface BedOption {
-    beds: number;
-    priceModifier?: number;
-    label: string;
-    labelAr: string;
 }
 
 export interface Amenity {
@@ -109,8 +101,9 @@ export const roomTypes: RoomType[] = [
         name: "Shared Dorm",
         nameAr: "اتاق مشترک",
         price: 50,
-        image: "https://drive.google.com/uc?export=view&id=1bZ6zpCD7BQ-wUqETiHKjsLvPd3Na_PWU",
+        image: "https://drive.google.com/uc?export=view&id=1L8vkGVTxQvApz807ADOh-UyupSC6dqkp",
         images: [
+            "https://drive.google.com/uc?export=view&id=1L8vkGVTxQvApz807ADOh-UyupSC6dqkp",
             "https://drive.google.com/uc?export=view&id=1bZ6zpCD7BQ-wUqETiHKjsLvPd3Na_PWU",
             "https://drive.google.com/uc?export=view&id=1rilfpKK2jtEFg4pwIO49AdDzVe_84U2G",
             "https://drive.google.com/uc?export=view&id=1_9WeCkVvDxvt8y-Un8uT8xKA7-STJTqM",
@@ -120,20 +113,6 @@ export const roomTypes: RoomType[] = [
             "https://drive.google.com/uc?export=view&id=11D5uUh4unq7W4zuJR7PWCYbTPwZHtZDv",
             "https://drive.google.com/uc?export=view&id=1cPnWqJz9bKzofDKUBNSrC6CzZWRJ4ZNg",
             "https://drive.google.com/uc?export=view&id=1IgVAv9kpomS0BU268551CmYQ82NJhS4v"
-        ],
-        bedOptions: [
-            {
-                beds: 8,
-                priceModifier: 0,
-                label: "8-Bed Dorm",
-                labelAr: "هشت تخته"
-            },
-            {
-                beds: 10,
-                priceModifier: 0,
-                label: "10-Bed Dorm",
-                labelAr: "ده تخته"
-            }
         ],
         amenities: ["wifi", "ac", "locker", "reading_light", "power_outlet", "shared_bathroom"],
         description: "Comfortable shared accommodation with modern amenities. Each bed comes with privacy curtains, personal reading lights, and secure lockers. Perfect for solo travelers and backpackers looking to meet new people. Available in 8-bed and 10-bed configurations.",
