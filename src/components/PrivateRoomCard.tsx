@@ -90,7 +90,7 @@ export default function PrivateRoomCard() {
                 <div className="flex flex-col lg:flex-row">
                     {/* Image Slider Section */}
                     <div
-                        className="lg:w-1/2 relative h-80 cursor-pointer"
+                        className="lg:w-1/2 relative h-100 cursor-pointer"
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                         onClick={() => openLightbox(currentImageIndex)}
@@ -255,14 +255,6 @@ export default function PrivateRoomCard() {
                             >
                                 <Phone className="w-5 h-5"/>
                                 {t('buttons.whatsapp')}
-                            </motion.button>
-
-                            <motion.button
-                                whileHover={{scale: 1.05}}
-                                whileTap={{scale: 0.95}}
-                                className="flex-1 glass-card text-white font-semibold py-4 px-6 rounded-xl hover:bg-white/20 transition-all"
-                            >
-                                {t('buttons.moreDetails')}
                             </motion.button>
                         </div>
 
