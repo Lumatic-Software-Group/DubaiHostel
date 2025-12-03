@@ -1,165 +1,379 @@
 'use client';
 
-import {motion} from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import {useTranslations} from 'next-intl';
-import {MapPin, Train, ShoppingBag, Phone, Calendar} from 'lucide-react';
+import {MapPin, Train, ShoppingBag, Phone, Calendar, ChevronLeft, ChevronRight, X} from 'lucide-react';
 import Image from 'next/image';
+import {useState, useEffect} from 'react';
+import {privateRoomData} from '@/data/privateRoom';
 
 export default function PrivateRoomCard() {
-  const t = useTranslations('privateRoom');
+    const t = useTranslations('privateRoom');
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+    const [lightboxImageIndex, setLightboxImageIndex] = useState(0);
 
-  const handleWhatsAppContact = () => {
-    const message = t('whatsappMessage');
-    const whatsappUrl = `https://wa.me/971521900874?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
-  };
+    const images = privateRoomData.images;
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-      className="glass-card rounded-3xl overflow-hidden mb-8"
-    >
-      {/* Special Badge */}
-      <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white text-center py-2 px-4">
-        <span className="font-semibold">
-          {t('topBadge')}
-        </span>
-      </div>
+    useEffect(() => {
+        if (!isHovered && !isLightboxOpen) {
+            const interval = setInterval(() => {
+                setCurrentImageIndex((prev) =>
+                    prev === images.length - 1 ? 0 : prev + 1
+                );
+            }, 3000);
 
-      <div className="flex flex-col lg:flex-row">
-        {/* Image Section */}
-        <div className="lg:w-1/2 relative h-80">
-          <Image
-            src="https://drive.google.com/uc?export=view&id=1ptr0Vi97I-XsM5IG4uP9WpnWhXmWK_Ml"
-            alt={t('altText')}
-            fill
-            className="object-cover"
-          />
-          
-          {/* Price Badge */}
-          <div className="absolute top-4 right-4 glass-dark rounded-2xl px-4 py-2">
-            <div className="text-center text-white">
-              <div className="text-2xl font-bold">50 AED</div>
-              <div className="text-sm">{t('perNight')}</div>
-            </div>
-          </div>
+            return () => clearInterval(interval);
+        }
+    }, [isHovered, isLightboxOpen, images.length]);
 
-          {/* Monthly Price */}
-          <div className="absolute top-4 left-4 glass rounded-2xl px-4 py-2">
-            <div className="text-center text-white">
-              <div className="text-lg font-bold">900 AED</div>
-              <div className="text-xs">{t('priceMonthly')}</div>
-            </div>
-          </div>
+    const handleWhatsAppContact = () => {
+        const message = t('whatsappMessage');
+        const whatsappUrl = `https://wa.me/971521900874?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank');
+    };
 
-          {/* Established Badge */}
-          <div className="absolute bottom-4 left-4 glass-accent rounded-xl px-3 py-1">
-            <div className="text-green-400 text-sm font-semibold">
-              {t('since')}
-            </div>
-          </div>
-        </div>
+    const nextImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentImageIndex((prev) =>
+            prev === images.length - 1 ? 0 : prev + 1
+        );
+    };
 
-        {/* Content Section */}
-        <div className="lg:w-1/2 p-8">
-          <div className="mb-6">
-            <h2 className="text-3xl font-bold text-white mb-3">
-              {t('title')}
-            </h2>
-            
-            <div className="flex items-center text-white/80 mb-4">
-              <MapPin className="w-5 h-5 mr-2" />
-              <span>
-                {t('location')}
-              </span>
-            </div>
+    const prevImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setCurrentImageIndex((prev) =>
+            prev === 0 ? images.length - 1 : prev - 1
+        );
+    };
 
-            <p className="text-white/90 leading-relaxed mb-6">
-              {t('description')}
-            </p>
-          </div>
+    const openLightbox = (index: number) => {
+        setLightboxImageIndex(index);
+        setIsLightboxOpen(true);
+    };
 
-          {/* Key Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-            <div className="glass-dark rounded-xl p-4 flex items-center">
-              <ShoppingBag className="w-6 h-6 text-blue-400 mr-3" />
-              <div>
-                <div className="text-white font-medium">
-                  {t('features.supermarket')}
-                </div>
-                <div className="text-white/60 text-sm">Malabar</div>
-              </div>
-            </div>
+    const closeLightbox = () => {
+        setIsLightboxOpen(false);
+    };
 
-            <div className="glass-dark rounded-xl p-4 flex items-center">
-              <Train className="w-6 h-6 text-green-400 mr-3" />
-              <div>
-                <div className="text-white font-medium">
-                  {t('features.metro')}
-                </div>
-                <div className="text-white/60 text-sm">
-                  {t('features.metroDistance')}
-                </div>
-              </div>
-            </div>
+    const nextLightboxImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setLightboxImageIndex((prev) =>
+            prev === images.length - 1 ? 0 : prev + 1
+        );
+    };
 
-            <div className="glass-dark rounded-xl p-4 flex items-center">
-              <Calendar className="w-6 h-6 text-purple-400 mr-3" />
-              <div>
-                <div className="text-white font-medium">
-                  {t('features.rates')}
-                </div>
-                <div className="text-white/60 text-sm">
-                  {t('features.ratesType')}
-                </div>
-              </div>
-            </div>
+    const prevLightboxImage = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setLightboxImageIndex((prev) =>
+            prev === 0 ? images.length - 1 : prev - 1
+        );
+    };
 
-            <div className="glass-dark rounded-xl p-4 flex items-center">
-              <Phone className="w-6 h-6 text-orange-400 mr-3" />
-              <div>
-                <div className="text-white font-medium">
-                  {t('features.foodService')}
-                </div>
-                <div className="text-white/60 text-sm">
-                  {t('features.foodServiceType')}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <motion.button
-              whileHover={{scale: 1.05}}
-              whileTap={{scale: 0.95}}
-              onClick={handleWhatsAppContact}
-              className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-xl transition-colors flex items-center justify-center gap-3"
+    return (
+        <>
+            <motion.div
+                initial={{opacity: 0, y: 30}}
+                whileInView={{opacity: 1, y: 0}}
+                viewport={{once: true}}
+                transition={{duration: 0.6}}
+                className="glass-card rounded-3xl overflow-hidden mb-8"
             >
-              <Phone className="w-5 h-5" />
-              {t('buttons.whatsapp')}
-            </motion.button>
-            
-            <motion.button
-              whileHover={{scale: 1.05}}
-              whileTap={{scale: 0.95}}
-              className="flex-1 glass-card text-white font-semibold py-4 px-6 rounded-xl hover:bg-white/20 transition-all"
-            >
-              {t('buttons.moreDetails')}
-            </motion.button>
-          </div>
+                {/* Special Badge */}
+                <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white text-center py-2 px-4">
+          <span className="font-semibold">
+            {t('topBadge')}
+          </span>
+                </div>
 
-          {/* Special Note */}
-          <div className="mt-4 p-3 glass-accent rounded-xl">
-            <p className="text-green-300 text-sm text-center">
-              {t('note')}
-            </p>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
+                <div className="flex flex-col lg:flex-row">
+                    {/* Image Slider Section */}
+                    <div
+                        className="lg:w-1/2 relative h-80 cursor-pointer"
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                        onClick={() => openLightbox(currentImageIndex)}
+                    >
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={currentImageIndex}
+                                initial={{opacity: 0}}
+                                animate={{opacity: 1}}
+                                exit={{opacity: 0}}
+                                transition={{duration: 0.5}}
+                                className="relative w-full h-full"
+                            >
+                                <Image
+                                    src={images[currentImageIndex]}
+                                    alt={`${t('altText')} - ${currentImageIndex + 1}`}
+                                    fill
+                                    className="object-cover"
+                                />
+                            </motion.div>
+                        </AnimatePresence>
+
+                        {/* Navigation Arrows */}
+                        {isHovered && (
+                            <>
+                                <motion.button
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1}}
+                                    onClick={prevImage}
+                                    className="absolute left-2 top-1/2 -translate-y-1/2 glass-dark rounded-full p-2 hover:bg-white/30 transition-colors z-10"
+                                >
+                                    <ChevronLeft className="w-5 h-5 text-white"/>
+                                </motion.button>
+                                <motion.button
+                                    initial={{opacity: 0}}
+                                    animate={{opacity: 1}}
+                                    onClick={nextImage}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 glass-dark rounded-full p-2 hover:bg-white/30 transition-colors z-10"
+                                >
+                                    <ChevronRight className="w-5 h-5 text-white"/>
+                                </motion.button>
+                            </>
+                        )}
+
+                        {/* Image Indicators */}
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                            {images.map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setCurrentImageIndex(i);
+                                    }}
+                                    className={`w-2 h-2 rounded-full transition-all ${
+                                        i === currentImageIndex
+                                            ? 'bg-white w-6'
+                                            : 'bg-white/50 hover:bg-white/70'
+                                    }`}
+                                />
+                            ))}
+                        </div>
+
+                        {/* Price Badge */}
+                        <div className="absolute top-4 right-4 glass-dark rounded-2xl px-4 py-2">
+                            <div className="text-center text-white">
+                                <div className="text-2xl font-bold">50 AED</div>
+                                <div className="text-sm">{t('perNight')}</div>
+                            </div>
+                        </div>
+
+                        {/* Monthly Price */}
+                        <div className="absolute top-4 left-4 glass rounded-2xl px-4 py-2">
+                            <div className="text-center text-white">
+                                <div className="text-lg font-bold">900 AED</div>
+                                <div className="text-xs">{t('priceMonthly')}</div>
+                            </div>
+                        </div>
+
+                        {/* Established Badge */}
+                        <div className="absolute bottom-16 left-4 glass-accent rounded-xl px-3 py-1">
+                            <div className="text-green-400 text-sm font-semibold">
+                                {t('since')}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="lg:w-1/2 p-8">
+                        <div className="mb-6">
+                            <h2 className="text-3xl font-bold text-white mb-3">
+                                {t('title')}
+                            </h2>
+
+                            <div className="flex items-center text-white/80 mb-4">
+                                <MapPin className="w-5 h-5 mr-2"/>
+                                <span>
+                  {t('location')}
+                </span>
+                            </div>
+
+                            <p className="text-white/90 leading-relaxed mb-6">
+                                {t('description')}
+                            </p>
+                        </div>
+
+                        {/* Key Features */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                            <div className="glass-dark rounded-xl p-4 flex items-center">
+                                <ShoppingBag className="w-6 h-6 text-blue-400 mr-3"/>
+                                <div>
+                                    <div className="text-white font-medium">
+                                        {t('features.supermarket')}
+                                    </div>
+                                    <div className="text-white/60 text-sm">Malabar</div>
+                                </div>
+                            </div>
+
+                            <div className="glass-dark rounded-xl p-4 flex items-center">
+                                <Train className="w-6 h-6 text-green-400 mr-3"/>
+                                <div>
+                                    <div className="text-white font-medium">
+                                        {t('features.metro')}
+                                    </div>
+                                    <div className="text-white/60 text-sm">
+                                        {t('features.metroDistance')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="glass-dark rounded-xl p-4 flex items-center">
+                                <Calendar className="w-6 h-6 text-purple-400 mr-3"/>
+                                <div>
+                                    <div className="text-white font-medium">
+                                        {t('features.rates')}
+                                    </div>
+                                    <div className="text-white/60 text-sm">
+                                        {t('features.ratesType')}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="glass-dark rounded-xl p-4 flex items-center">
+                                <Phone className="w-6 h-6 text-orange-400 mr-3"/>
+                                <div>
+                                    <div className="text-white font-medium">
+                                        {t('features.foodService')}
+                                    </div>
+                                    <div className="text-white/60 text-sm">
+                                        {t('features.foodServiceType')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <motion.button
+                                whileHover={{scale: 1.05}}
+                                whileTap={{scale: 0.95}}
+                                onClick={handleWhatsAppContact}
+                                className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-4 px-6 rounded-xl transition-colors flex items-center justify-center gap-3"
+                            >
+                                <Phone className="w-5 h-5"/>
+                                {t('buttons.whatsapp')}
+                            </motion.button>
+
+                            <motion.button
+                                whileHover={{scale: 1.05}}
+                                whileTap={{scale: 0.95}}
+                                className="flex-1 glass-card text-white font-semibold py-4 px-6 rounded-xl hover:bg-white/20 transition-all"
+                            >
+                                {t('buttons.moreDetails')}
+                            </motion.button>
+                        </div>
+
+                        {/* Special Note */}
+                        <div className="mt-4 p-3 glass-accent rounded-xl">
+                            <p className="text-green-300 text-sm text-center">
+                                {t('note')}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </motion.div>
+
+            {/* Lightbox Modal */}
+            <AnimatePresence>
+                {isLightboxOpen && (
+                    <motion.div
+                        initial={{opacity: 0}}
+                        animate={{opacity: 1}}
+                        exit={{opacity: 0}}
+                        className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
+                        onClick={closeLightbox}
+                    >
+                        {/* Close Button */}
+                        <motion.button
+                            initial={{opacity: 0, scale: 0.8}}
+                            animate={{opacity: 1, scale: 1}}
+                            exit={{opacity: 0, scale: 0.8}}
+                            onClick={closeLightbox}
+                            className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm rounded-full p-3 hover:bg-white/20 transition-colors z-10"
+                        >
+                            <X className="w-6 h-6 text-white"/>
+                        </motion.button>
+
+                        {/* Image Counter */}
+                        <div
+                            className="absolute top-4 left-4 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2 text-white text-sm">
+                            {lightboxImageIndex + 1} / {images.length}
+                        </div>
+
+                        {/* Main Image */}
+                        <motion.div
+                            initial={{scale: 0.8, opacity: 0}}
+                            animate={{scale: 1, opacity: 1}}
+                            exit={{scale: 0.8, opacity: 0}}
+                            className="relative w-full max-w-6xl h-[80vh]"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={lightboxImageIndex}
+                                    initial={{opacity: 0, x: 100}}
+                                    animate={{opacity: 1, x: 0}}
+                                    exit={{opacity: 0, x: -100}}
+                                    transition={{duration: 0.3}}
+                                    className="relative w-full h-full"
+                                >
+                                    <Image
+                                        src={images[lightboxImageIndex]}
+                                        alt={`${t('altText')} - ${lightboxImageIndex + 1}`}
+                                        fill
+                                        className="object-contain"
+                                    />
+                                </motion.div>
+                            </AnimatePresence>
+                        </motion.div>
+
+                        {/* Navigation Arrows */}
+                        <>
+                            <button
+                                onClick={prevLightboxImage}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm rounded-full p-4 hover:bg-white/20 transition-colors"
+                            >
+                                <ChevronLeft className="w-8 h-8 text-white"/>
+                            </button>
+                            <button
+                                onClick={nextLightboxImage}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-sm rounded-full p-4 hover:bg-white/20 transition-colors"
+                            >
+                                <ChevronRight className="w-8 h-8 text-white"/>
+                            </button>
+                        </>
+
+                        {/* Thumbnail Strip */}
+                        <div
+                            className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 p-2 bg-black/50 backdrop-blur-sm rounded-2xl max-w-full overflow-x-auto">
+                            {images.map((img, i) => (
+                                <button
+                                    key={i}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setLightboxImageIndex(i);
+                                    }}
+                                    className={`relative w-16 h-16 rounded-lg overflow-hidden transition-all flex-shrink-0 ${
+                                        i === lightboxImageIndex
+                                            ? 'ring-2 ring-white scale-110'
+                                            : 'opacity-60 hover:opacity-100'
+                                    }`}
+                                >
+                                    <Image
+                                        src={img}
+                                        alt={`Thumbnail ${i + 1}`}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </>
+    );
 }

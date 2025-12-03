@@ -3,6 +3,7 @@ export interface PrivateRoomData {
     nameAr: string;
     description: string;
     descriptionAr: string;
+    images: string[];
     location: {
         address: string;
         addressAr: string;
@@ -34,6 +35,16 @@ export const privateRoomData: PrivateRoomData = {
     nameAr: "اتاق خصوصی - نایف",
     description: "Affordable private accommodation in the heart of Naif, strategically located opposite Malabar Supermarket for ultimate convenience. Just steps away from Baniyas Metro station, this budget-friendly room offers excellent connectivity to all Dubai attractions while being nestled in the vibrant Naif neighborhood known for its traditional souks and authentic Dubai experience.",
     descriptionAr: "اقامت خصوصی مقرون‌به‌صرفه در قلب نایف، واقع در مقابل سوپرمارکت مالابار برای راحتی نهایی. تنها چند قدم تا ایستگاه مترو بنیاس، این اتاق مقرون‌به‌صرفه اتصال عالی به تمام جاذبه‌های دبی را ارائه می‌دهد در حالی که در محله پر جنب و جوش نایف قرار دارد که به خاطر بازارهای سنتی و تجربه اصیل دبی شناخته می‌شود.",
+    images: [
+        "https://drive.google.com/uc?export=view&id=1a0zGBq7rBbp3UJdxzNK3e7fJUxvIqq8s",
+        "https://drive.google.com/uc?export=view&id=1Ae8IzdIv6wyfD6Dh2igWJHfwIJZGZEQC",
+        "https://drive.google.com/uc?export=view&id=1ufh9oPPXqm2dvjqh3mubiAeOLUUSxEMn",
+        "https://drive.google.com/uc?export=view&id=1jLlwQtqZw9cXTrIE3fh-o2yahkCaCEpV",
+        "https://drive.google.com/uc?export=view&id=1ERBoDU6asyd5NIzxNPfPMPhhEOAGwTIS",
+        "https://drive.google.com/uc?export=view&id=1WN9BzimX0e5GSMsRhGes0XTe7PafvIXq",
+        "https://drive.google.com/uc?export=view&id=1jTsUHxlAj3wm7pjdstPSvM9n8vOFWAx5",
+        "https://drive.google.com/uc?export=view&id=1x-ggcj5hXWNZQDeSuHHHwIF_zYOcZ0C6"
+    ],
     location: {
         address: "Naif Road, opposite Malabar Supermarket, near Baniyas Metro",
         addressAr: "جاده نایف، مقابل سوپرمارکت مالابار، نزدیک مترو بنیاس",
