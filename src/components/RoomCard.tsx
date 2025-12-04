@@ -34,7 +34,6 @@ const amenityIcons: { [key: string]: any } = {
 
 export default function RoomCard({room, index}: RoomCardProps) {
     const t = useTranslations('rooms');
-    const tCard = useTranslations('roomCard');
     const locale = useLocale();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
@@ -73,7 +72,7 @@ export default function RoomCard({room, index}: RoomCardProps) {
     };
 
     const handleWhatsAppContact = () => {
-        const message = tCard('whatsappMessage');
+        const message = t('roomCard.whatsappMessage');
         const whatsappUrl = `https://wa.me/971521900874?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     };
@@ -284,7 +283,7 @@ export default function RoomCard({room, index}: RoomCardProps) {
                         className="w-full bg-green-500 rounded-xl py-3 text-white text-sm font-semibold hover:bg-green-600 transition-colors flex items-center justify-center gap-2"
                     >
                         <Phone className="w-4 h-4"/>
-                        {tCard('bookNow')}
+                        {t('bookNow')}
                     </motion.button>
                 </div>
             </motion.div>
