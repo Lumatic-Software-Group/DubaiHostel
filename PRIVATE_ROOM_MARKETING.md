@@ -146,14 +146,14 @@
 
 ## 📊 **COMPETITIVE ADVANTAGES**
 
-| **Feature** | **Advantage** |
-|-------------|---------------|
+| **Feature** | **Advantage**                                      |
+|-------------|----------------------------------------------------|
 | **Location** | Opposite major supermarket - unmatched convenience |
-| **Transport** | 2-min walk to metro - excellent connectivity |
-| **Price** | 50 AED/day - highly competitive in Dubai market |
-| **Food Service** | Available on demand via WhatsApp |
-| **Neighborhood** | Authentic Dubai experience in historic Naif |
-| **Flexibility** | Daily and monthly rates available |
+| **Transport** | 3-min walk to metro - excellent connectivity       |
+| **Price** | 50 AED/day - highly competitive in Dubai market    |
+| **Food Service** | Available on demand via WhatsApp                   |
+| **Neighborhood** | Authentic Dubai experience in historic Naif        |
+| **Flexibility** | Daily and monthly rates available                  |
 
 ---
 

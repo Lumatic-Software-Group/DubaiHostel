@@ -245,7 +245,7 @@ export default function PrivateRoomCard() {
                                         <Train className="w-6 h-6 text-green-400 mr-3"/>
                                         <div>
                                             <div className="text-white font-medium">Metro</div>
-                                            <div className="text-white/60 text-sm">2-min walk</div>
+                                            <div className="text-white/60 text-sm">3-min walk</div>
                                         </div>
                                     </div>
 
