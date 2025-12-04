@@ -5,7 +5,8 @@ import {useTranslations, useLocale} from 'next-intl';
 import {Wifi, Snowflake, Users, Maximize, Bed, Phone, ChevronLeft, ChevronRight, X} from 'lucide-react';
 import Image from 'next/image';
 import {useState, useEffect} from 'react';
-import {RoomType} from '@/data/hostels';
+import {RoomType, roomTypes} from '@/data/hostels';
+import {privateRoomData} from "@/data/privateRoom";
 
 interface RoomCardProps {
     room: RoomType;
@@ -72,7 +73,8 @@ export default function RoomCard({room, index}: RoomCardProps) {
     };
 
     const handleWhatsAppContact = () => {
-        const message = t('roomCard.whatsappMessage');
+        const roomName = locale === 'fa' ? room.nameAr : room.name;
+        const message = t('roomCard.whatsappMessage', { roomName });
         const whatsappUrl = `https://wa.me/971521900874?text=${encodeURIComponent(message)}`;
         window.open(whatsappUrl, '_blank');
     };
